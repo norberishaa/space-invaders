@@ -130,16 +130,16 @@ def main():
     point = 0
     lives = 5
     b_pos = 0
-    o_pos = 1020
-    speed = 2
+    o_pos = -1020
+    speed = 3
     while lives > 0:
         if b_pos <= -HEIGHT:
             b_pos = HEIGHT
         if o_pos <= - HEIGHT:
             o_pos = HEIGHT
 
-        b_pos -= speed
-        o_pos -= speed
+        b_pos += speed
+        o_pos += speed
 
         WIN.blit(BACKGROUND, (0, b_pos))
         WIN.blit(OVERLAP, (0, o_pos))
