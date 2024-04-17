@@ -30,7 +30,7 @@ VEL = 6
 BULLET_VEL = 10
 
 
-# DRAWd
+# DRAW
 def draw(ship, bullets, rocks, score, lives_left):
 
     WIN.blit(score, (WIDTH // 2, HEIGHT // 2))
@@ -73,7 +73,7 @@ def bullet_movement(bullets):
 
 # ROCK
 def choose_rock(rock_images):
-    rock_image = random.choices(rock_images, weights=[1, 2, 2], k=1)[0]
+    rock_image = random.choices(rock_images, weights=[1, 2, 3], k=1)[0]
     return rock_image
 
 
@@ -85,7 +85,7 @@ def create_rock(rock_image):
     return new_rock
 
 
-def rock_movement(rocks):
+def rock_movement(rocks, point):
     for rock, rock_image in rocks:
         if rock.y >= HEIGHT:
             rocks.remove((rock, rock_image))
@@ -133,10 +133,10 @@ def main():
     o_pos = -1020
     speed = 3
     while lives > 0:
-        if b_pos <= -HEIGHT:
-            b_pos = HEIGHT
-        if o_pos <= - HEIGHT:
-            o_pos = HEIGHT
+        if b_pos >= HEIGHT:
+            b_pos = -HEIGHT
+        if o_pos >= HEIGHT:
+            o_pos = -HEIGHT
 
         b_pos += speed
         o_pos += speed
@@ -161,12 +161,14 @@ def main():
             rock_timer -= 1
 
         bullet_movement(bullets)
-        rock_movement(rocks)
         keys_pressed = pygame.key.get_pressed()
         move(ship, keys_pressed)
 
         if is_hit(rocks, bullets):
             point += 1
+
+        if rock_movement(rocks, point):
+            point -= 1
 
         if is_collision(rocks, ship):
             lives -= 1
